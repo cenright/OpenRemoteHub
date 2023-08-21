@@ -1,4 +1,3 @@
-""" command_processor.py """
 import pathlib
 import json
 import time
@@ -46,20 +45,22 @@ class CommandProcessor:
         while True:
             item = self.command_queue.get()
             scancode = str(item["scancode"])
+            keystate = str(item["keystate"])
             long_press = item["long_press"]
-            print(f"processing scancode {scancode}, long_press {long_press}")
+            print(f"processing scancode {scancode}, keystate {keystate}, long_press {long_press}")
+            print(item)
             if scancode in self.current_activity:
                 code = self.current_activity[scancode]
                 if long_press and "long_press" in code:
                     code = code["long_press"]
                 with self.plugins_lock:
-                    self.process_code(code)
+                    self.process_code(code, item)
             else:
                 print(f"scancode {scancode} not found")
 
             self.command_queue.task_done()
 
-    def process_code(self, code: str):
+    def process_code(self, code: str, event):
         """process_code"""
         repeat = 1
         if "repeat" in code:
@@ -76,7 +77,7 @@ class CommandProcessor:
                 for macro_code in code["macro"]:
                     self.process_code(macro_code)
             elif action in self.plugins:
-                self.plugins[action](code)
+                self.plugins[action](code, event)
             else:
                 print(f"Unknown action({action})")
 
@@ -127,14 +128,15 @@ class CommandProcessor:
             self.on_unload()
 
             # read the common file
-            with open("json/common.json", encoding="utf-8") as file:
-                common = json.load(file)
+            #with open("json/common.json", encoding="utf-8") as file:
+            #with open("common.json", encoding="utf-8") as file:
+            #    common = json.load(file)
 
             # read the configuration file
             with open(conf_file, encoding="utf-8") as file:
                 self.current_activity = json.load(file)
 
-            self.current_activity.update(common)
+            #self.current_activity.update(common)
             self.current_activity_file = conf_file
             self.on_load()
         else:
