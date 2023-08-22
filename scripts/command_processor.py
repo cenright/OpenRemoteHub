@@ -55,6 +55,13 @@ class CommandProcessor:
                     code = code["long_press"]
                 with self.plugins_lock:
                     self.process_code(code, item)
+            elif "DEFAULT" in self.current_activity:
+                code = self.current_activity["DEFAULT"]
+                print("islogi" + str("long_press" in code))
+                if long_press and "long_press" in code:
+                    code = code["long_press"]
+                with self.plugins_lock:
+                    self.process_code(code, item)
             else:
                 print(f"scancode {scancode} not found")
 
@@ -101,7 +108,15 @@ class CommandProcessor:
                 plugin_module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(plugin_module)
                 action = plugin_file.stem
-                self.register_plugin(action, plugin_module.run)
+
+                
+                if hasattr(plugin_module, "run"):
+                    self.register_plugin(action, plugin_module.run)
+
+                else:
+                    print("skipping module " + action + ", run not found")
+                
+                #self.register_plugin(action, plugin_module.run)
 
     def sleep(self, device, duration):
         """sleep"""

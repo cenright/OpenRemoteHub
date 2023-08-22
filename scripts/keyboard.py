@@ -42,6 +42,11 @@ class Keyboard:
                
                 cat = evdev.categorize(event)
                 keycode = cat.keycode
+                
+                #if hasattr(keycode, "__len__"):
+                if isinstance(keycode, str) == False:
+                    keycode = keycode[1]
+                
                 #event.keycode = keycode
                 #event.scancode = event.value
                 keyEvent = KeyEvent
