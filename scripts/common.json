@@ -1,0 +1,58 @@
+{
+    "168":{
+        "comment": "blue",
+        "action": "load",
+        "file":"json/example_stb.json"
+    },
+    "217":{
+        "comment": "orange",
+        "action": "load",
+        "file":"json/example_dvd.json"
+    },
+    "208":{
+        "comment": "red",
+        "action": "load",
+        "file":"json/example_xbox360.json"
+    },
+    "115":{
+        "comment": "Volume Up",
+        "action": "ir",
+        "code": "VOLUME_VOLUME_UP",
+        "device": "yamaha_receiver"
+    },
+    "114":{
+        "comment": "Volume Down",
+        "action": "ir",
+        "code": "VOLUME_VOLUME_DOWN",
+        "device": "yamaha_receiver"
+    },
+    "786888":{
+        "comment": "Mute",
+        "action": "sendevent",
+        "code": "VOLUME_MUTE_TOGGLE",
+        "device": "yamaha_receiver"
+    },
+    "113":{
+        "comment": "Mute",
+        "action": "ir",
+        "code": "VOLUME_MUTE_TOGGLE",
+        "device": "yamaha_receiver"
+    },
+    "116":{
+        "comment": "power system off macro",
+        "action": "macro",
+        "macro": [
+            { "action": "ir", "code":"INPUT_HDMI_1" , "device": "toshiba_tv", "repeat":2 },
+            { "action": "sleep", "duration": ".25" , "device": "toshiba_tv" },
+            { "action": "ir", "code":"INPUT_HDMI_2" , "device": "yamaha_receiver", "repeat":2 },
+            { "action": "sleep", "duration": ".25" , "device": "toshiba_tv" },
+            { "action": "ir", "code":"KEY_POWER_OFF" , "device": "toshiba_tv", "repeat":2 },
+            { "action": "sleep", "duration": ".25" , "device": "toshiba_tv" },
+            { "action": "ir", "code":"KEY_POWER_OFF" , "device": "yamaha_receiver" },
+            { "action": "sleep", "duration": ".25" , "device": "toshiba_tv" },
+            { "action": "ir", "code":"KEY_POWER_OFF" , "device": "nvidia_shield", "repeat":5},
+            { "action": "sleep", "duration": ".25" , "device": "toshiba_tv" },
+            { "action": "ir", "code":"KEY_POWER_OFF" , "device": "xbox360_discrete" }
+        ]
+    }
+}
